@@ -125,7 +125,7 @@ Dependency management for Python files is done using POETRY.
     git clone https://github.com/u123dev/crypto_fastapi_django_celery.git
     ```
 
-1. Create fastapi.env with reference to fastapi.env.sample
+1. Create `fastapi.env` with reference to `fastapi.env.sample`
 
 1. Build
 
@@ -169,11 +169,11 @@ Dependency management for Python files is done using POETRY.
     ```
 1. API Access
 
-    [http://127.0.0.1:8000/docs/](http://127.0.0.1:8000/docs/)
+   - [http://127.0.0.1:8000/docs/](http://127.0.0.1:8000/docs/)
 
 1. Admin Panel Access
 
-   [http://127.0.0.1:8001/admin/](http://127.0.0.1:8001/admin/)
+   - [http://127.0.0.1:8001/admin/](http://127.0.0.1:8001/admin/)
 
 2. Access Flower / Celery tasks monitoring:
    - [http://127.0.0.1:5555/](http://127.0.0.1:8000/5555/)
