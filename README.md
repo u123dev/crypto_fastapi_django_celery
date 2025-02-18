@@ -122,7 +122,7 @@ Dependency management for Python files is done using POETRY.
 1. Clone this repository
 
    ```sh
-    git clone https://github.com/u123dev/crypto-fastapi-django.git
+    git clone https://github.com/u123dev/crypto_fastapi_django_celery.git
     ```
 
 1. Create fastapi.env with reference to fastapi.env.sample
