@@ -1,0 +1,76 @@
+#version: "3.7"
+services:
+  fastapi:
+    container_name: fastapi-django-template-fastapi
+    build: ./fastapi
+    volumes:
+      - ./fastapi:/src
+    ports:
+      - 8000:8000
+      - 8001:8001
+    env_file:
+      - fastapi/fastapi.env
+    links:
+      - postgres
+#    command: ./scripts/runlocalserver.sh
+    command: /bin/bash -c "dos2unix ./scripts/*.sh && ./scripts/runlocalserver.sh"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  celery_worker:
+    build: ./fastapi
+    command: "poetry run celery -A app.celery.celery_app worker --queues=default --loglevel=info -E"
+    depends_on:
+      - fastapi
+      - redis
+    env_file:
+      - fastapi/fastapi.env
+    volumes:
+      - ./fastapi:/src
+
+  celery_beat:
+    build: ./fastapi
+    command: "poetry run celery -A app.celery.celery_app beat --loglevel=info"
+    depends_on:
+      - fastapi
+      - redis
+    env_file:
+      - fastapi/fastapi.env
+    volumes:
+      - ./fastapi:/src
+
+  flower:
+    build:
+      context: ./fastapi
+      dockerfile: Dockerfile
+    ports:
+      - "5555:5555"
+    environment:
+      - FLOWER_UNAUTHENTICATED_API=true # Flower API access
+    env_file:
+      - fastapi/fastapi.env
+    volumes:
+      - ./fastapi:/src
+    command: "poetry run celery -A celery flower --address=0.0.0.0 --broker=redis://redis:6379/0"
+    depends_on:
+      - redis
+      - celery_worker
+      - celery_beat
+
+  postgres:
+    container_name: fastapi-django-template-postgres
+    image: postgres:12
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: fastapi
+      POSTGRES_PASSWORD: fastapi
+      POSTGRES_DB: fastapi-django-template
+    ports:
+      - 5433:5432
+
+volumes:
+  postgres_data:
