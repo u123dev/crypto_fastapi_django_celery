@@ -10,7 +10,7 @@ from django.db import IntegrityError
 from app.models import Currency, Provider, Endpoint, Block
 
 
-async def fetch_statistics(url: str, headers = None) -> str | None:
+async def fetch_statistics(url: str, headers=None) -> str | None:
     """
     Fetch data from url and return it as a string.
     """
@@ -50,7 +50,7 @@ async def collect(endpoint_id: int) -> tuple | None:
     """
 
     @sync_to_async
-    def get_endpoint_with_related(endpoint_id):
+    def get_endpoint_with_related(endpoint_id: int) -> Endpoint | None:
         try:
             endpoint = Endpoint.objects.select_related(
                 "currency", "provider"
@@ -65,7 +65,7 @@ async def collect(endpoint_id: int) -> tuple | None:
             return None
 
     @sync_to_async
-    def check_block_exists(block_number, currency_id):
+    def check_block_exists(block_number: int, currency_id: int) -> bool:
         return Block.objects.filter(block_number=block_number, currency_id=currency_id).exists()
 
     result = await get_endpoint_with_related(endpoint_id)
@@ -111,7 +111,7 @@ async def collect(endpoint_id: int) -> tuple | None:
     return {endpoint_id: None}
 
 
-async def collect_all() -> dict[str, str]:
+async def collect_all() -> list[dict[int, str | None]]:
     """
     Collect data from all endpoint urls.
     Run all tasks as separate in parallel.

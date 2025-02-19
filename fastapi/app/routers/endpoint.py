@@ -51,7 +51,7 @@ async def endpoints(
     summary="Get endpoint by id",
     description=(
             "<h3>Fetch detailed information about endpoint by id</h3>"
-            "Authorized users retrieve all details of endpoint, such as"
+            "Authorized users retrieve all details of endpoint, such as: <br>"
             "`url link`, `currency`, `provider`, `header` (string), "
             "`pattern_block` (pattern to get block number from nested dicts),"
             "`pattern_timestamp` (pattern to get timestamp from nested dicts)"
@@ -60,7 +60,7 @@ async def endpoints(
 async def get_endpoint_detail(
         endpoint_id: int,
         current_user: User = Depends(get_current_admin_user)
-):
+) -> EndpointDetailSchema:
     @sync_to_async
     def get_endpoint_id():
         try:
@@ -80,7 +80,7 @@ async def get_endpoint_detail(
     summary="Update endpoint by id",
     description=(
             "<h3>Update detailed information of endpoint by id</h3>"
-            "Only admin users updtae all details of endpoint, such as"
+            "Only admin users update all details of endpoint, such as"
             "`url link`, `currency`, `provider`, `header` (string), "
             "`pattern_block` (pattern to get block number from nested dicts),"
             "`pattern_timestamp` (pattern to get timestamp from nested dicts)"
@@ -90,9 +90,9 @@ async def patch_endpoint(
         endpoint_id: int,
         data: EndpointUpdateSchema,
         current_user: User = Depends(get_current_admin_user)
-):
+) -> EndpointDetailSchema:
     @sync_to_async
-    def update_endpoint():
+    def update_endpoint() -> EndpointDetailSchema:
         try:
             endpoint = Endpoint.objects.select_related(
                 "currency", "provider"
