@@ -48,7 +48,7 @@ async def get_blocks(
 ) -> BlockListResponseSchema:
 
     @sync_to_async
-    def get_filtered_blocks():
+    def get_filtered_blocks() -> list:
         queryset = Block.objects.select_related("currency", "provider")
         if currency_name:
             queryset = queryset.filter(currency__name__iexact=currency_name)
@@ -60,7 +60,7 @@ async def get_blocks(
         return list(queryset)
 
     @sync_to_async
-    def get_total_count():
+    def get_total_count() -> int:
         queryset = Block.objects.all()
         if currency_name:
             queryset = queryset.filter(currency__name__iexact=currency_name)
@@ -115,7 +115,7 @@ async def get_block(
 ) -> BlockDetailSchema:
 
     @sync_to_async
-    def get_block_by_criteria():
+    def get_block_by_criteria() -> BlockDetailSchema:
         if block_id:
             try:
                 return Block.objects.select_related(
