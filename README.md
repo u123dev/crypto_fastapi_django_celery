@@ -28,8 +28,9 @@ services:
 
    ○ Pattern_block (pattern to get block number from nested dicts)
 
-      * for example: ```Pattern_block = "data.BTC.total_blocks" ``` means data from such json: 
-```
+      * for example:  Pattern_block = "data.BTC.total_blocks"  means data from such json:
+   
+   ```
       {
           "status":{
                ...
@@ -42,11 +43,12 @@ services:
               }
           }
       }
-```
+   ```
 
    ○ Pattern_timestamp (pattern to get timestamp from nested dicts)
 
-      * similarly, for example: ```Pattern_timestamp = "data.BTC.first_block_timestamp" ```
+      * similarly, for example: Pattern_timestamp = "data.BTC.first_block_timestamp"
+
 
 ### Block
    ○ FK to Currency
